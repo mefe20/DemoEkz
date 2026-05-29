@@ -2,23 +2,50 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Панель администратора</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ Панель</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h2>Панель управления заявками</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Клиент</th>
-                <th>Помещение</th>
-                <th>Дата</th>
-                <th>Статус</th>
-                <th>Действие</th>
-            </tr>
-        </thead>
-        <tbody id="admin-bookings">
-            </tbody>
-    </table>
+    <img src="images/05.png" alt="логотип" class="logo">
+    <h2>Управление заявками</h2>
+    
+    <select id="statusFilter" onchange="filterData()">
+        <option value="all">Все статусы</option>
+        <option value="Новая">Новая</option>
+        <option value="Банкет назначен">Банкет назначен</option>
+        <option value="Банкет завершен">Банкет завершен</option>
+    </select>
+    <button onclick="sortData()">Сортировать по дате</button>
+
+    <div id="admin-list">
+        <p class="subtext order-item" data-status="Новая">ID 1 | Иванов | Новая 
+            <button onclick="showModal()">изменить</button>
+        </p>
+    </div>
+
+    <div>
+        <button onclick="prevPage()">пред</button>
+        <span id="pageNum" class="subtext">1</span>
+        <button onclick="nextPage()">след</button>
+    </div>
+
+    <div id="alertModal" class="modal">
+        <h3>статус обновлен</h3>
+        <button onclick="closeModal()">ок</button>
+    </div>
+
+    <script>
+        function filterData() {
+            // тут логика скрытия элементов по классу
+        }
+        function sortData() {
+            // тут логика сортировки массива
+        }
+        function showModal() { document.getElementById('alertModal').style.display = 'block'; }
+        function closeModal() { document.getElementById('alertModal').style.display = 'none'; }
+        function prevPage() {}
+        function nextPage() {}
+    </script>
 </body>
 </html>
