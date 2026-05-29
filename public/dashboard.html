@@ -2,32 +2,60 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <img src="images/05.png" alt="логотип" class="logo">
     <h2>Личный кабинет</h2>
     
-    <h3>Создать заявку</h3>
+    <div class="slider-container">
+        <img src="images/1.jpg" id="slide" class="slider-img" alt="слайд">
+        <button class="slider-btn left" onclick="changeSlide(-1)">❮</button>
+        <button class="slider-btn right" onclick="changeSlide(1)">❯</button>
+    </div>
+
+    <h3>Оформить заявку</h3>
     <form id="bookingForm">
-        <label>Помещение:</label>
         <select id="hall_id" required>
+            <option value="" disabled selected>Выберите помещение</option>
             <option value="1">Зал</option>
             <option value="2">Ресторан</option>
             <option value="3">Летняя веранда</option>
             <option value="4">Закрытая веранда</option>
         </select>
-        <label>Дата банкета:</label>
         <input type="date" id="start_date" required>
-        <label>Способ оплаты:</label>
         <select id="payment_method" required>
+            <option value="" disabled selected>Способ оплаты</option>
             <option value="Оплата картой">Оплата картой</option>
             <option value="Наличные">Наличные</option>
         </select>
-        <button type="submit">Отправить заявку</button>
+        <button type="submit">Отправить</button>
     </form>
 
     <h3>Мои заявки</h3>
     <div id="my-bookings">
+        <div style="border: 1px solid var(--gold); padding: 5px; margin-bottom: 5px;">
+            <p class="subtext">Ресторан | 20.10.2026 | Статус: Банкет завершен</p>
+            <button onclick="leaveReview()">Оставить отзыв</button>
         </div>
+    </div>
+
+    <script>
+        // логика слайдера
+        let cur = 1;
+        function changeSlide(dir) {
+            cur += dir;
+            if (cur > 4) cur = 1;
+            if (cur < 1) cur = 4;
+            document.getElementById('slide').src = `images/${cur}.jpg`;
+        }
+        setInterval(() => changeSlide(1), 3000); // автосмена раз в 3 сек
+
+        function leaveReview() {
+            alert('форма отзыва');
+        }
+    </script>
 </body>
 </html>
