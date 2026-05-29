@@ -3,75 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Банкетам.Нет - Вход</title>
+    <title>Банкетам.Нет - Главная</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <img src="images/05.png" alt="логотип" class="logo">
-    <div id="login-section">
-        <h1>Вход</h1>
-        <form id="loginForm" onsubmit="auth(event)">
-            <input type="text" id="login" placeholder="Логин" required>
-            <div id="login-err" class="error">неверный логин или пароль</div>
-            
-            <input type="password" id="password" placeholder="Пароль" required>
-            
-            <button type="submit">Войти</button>
-        </form>
-        <p class="subtext">Еще не зарегистрированы? <a href="#" onclick="toggleAuth()">Регистрация</a></p>
+    <nav class="navbar">
+        <img src="images/05.png" alt="логотип" class="logo">
+        <div class="nav-links" id="nav-menu">
+            </div>
+    </nav>
+
+    <div class="container" style="text-align: center;">
+        <h1>Добро пожаловать в Банкетам.Нет</h1>
+        <h2>Идеальное место для вашего праздника</h2>
+        <p>Бронируйте залы, рестораны и веранды в пару кликов.</p>
+        <button onclick="window.location.href='auth.html'" style="max-width: 200px;">Начать</button>
     </div>
 
-    <div id="register-section" style="display: none;">
-        <h1>Регистрация</h1>
-        <form id="registerForm" onsubmit="reg(event)">
-            <input type="text" id="reg-fio" placeholder="ФИО" required>
-            <input type="text" id="reg-phone" placeholder="Телефон" required>
-            <input type="email" id="reg-email" placeholder="E-mail" required>
-            
-            <input type="text" id="reg-login" placeholder="Логин" required>
-            <div id="reg-login-err" class="error">только латиница и цифры, от 6 симв.</div>
-            
-            <input type="password" id="reg-password" placeholder="Пароль" required>
-            <div id="reg-pass-err" class="error">минимум 8 символов</div>
-            
-            <button type="submit">Зарегистрироваться</button>
-        </form>
-        <p class="subtext">Уже есть аккаунт? <a href="#" onclick="toggleAuth()">Вход</a></p>
-    </div>
-
-    <script>
-        function toggleAuth() {
-            const loginSec = document.getElementById('login-section');
-            const regSec = document.getElementById('register-section');
-            loginSec.style.display = loginSec.style.display === 'none' ? 'block' : 'none';
-            regSec.style.display = regSec.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function auth(e) {
-            e.preventDefault();
-            // тут будет fetch к api. пока показываем ошибку для примера
-            document.getElementById('login-err').style.display = 'block';
-        }
-
-        function reg(e) {
-            e.preventDefault();
-            const log = document.getElementById('reg-login').value;
-            const pass = document.getElementById('reg-password').value;
-            
-            // простая фронт-валидация
-            let hasErr = false;
-            if(!/^[a-zA-Z0-9]{6,}$/.test(log)) {
-                document.getElementById('reg-login-err').style.display = 'block';
-                hasErr = true;
-            } else { document.getElementById('reg-login-err').style.display = 'none'; }
-            
-            if(pass.length < 8) {
-                document.getElementById('reg-pass-err').style.display = 'block';
-                hasErr = true;
-            } else { document.getElementById('reg-pass-err').style.display = 'none'; }
-            
-            if(!hasErr) alert('отправка в бд...');
-        }
-    </script>
+    <script src="js/app.js"></script>
 </body>
 </html>

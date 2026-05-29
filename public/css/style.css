@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Oswald';
-    src: url('../fonts/Oswald-VariableFont_wght.ttf') format('truetype');
+    src: url('../fonts/Oswald.ttf') format('truetype');
 }
 
 :root {
@@ -11,84 +11,151 @@
     --green: #006400;
 }
 
-.logo {
-    width: 120px; 
-    height: auto;
-    display: block;
-    margin: 10px auto 20px auto;
-}
-
+/* сброс и базовые настройки */
 body {
     font-family: 'Oswald', sans-serif;
     background-color: var(--cream);
     color: #000000;
-    margin: 0 auto;
-    padding: 10px;
-    max-width: 390px; /* адаптация под мобилку */
-    height: 844px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
+/* контейнер для пк  */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+/* навигация */
+.navbar {
+    background-color: var(--gold);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar .logo {
+    width: 80px;
+    height: auto;
+    margin: 0;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--crimson);
+}
+
+/* типографика */
 h1 { font-size: 36px; color: var(--crimson); }
-h2, h3 { font-size: 24px; color: var(--gold); }
-h3 { font-size: 18px; }
+h2 { font-size: 24px; color: var(--gold); }
+h3 { font-size: 18px; color: var(--gold); }
 .subtext { font-size: 12px; color: var(--green); }
+
+/* формы и кнопки */
+.form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
 
 input, select, button {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 12px;
+    margin-bottom: 15px;
     box-sizing: border-box;
     font-family: 'Oswald', sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 button {
     background-color: var(--gold);
+    color: white;
     border: none;
     cursor: pointer;
     font-size: 16px;
+    transition: background 0.3s;
 }
+
+button:hover { background-color: var(--crimson); }
 
 .error {
     color: var(--crimson);
     font-size: 12px;
     display: none;
-    margin-top: -10px;
-    margin-bottom: 10px;
+    margin-top: -12px;
+    margin-bottom: 15px;
 }
 
-/* стили слайдера */
+/* кастомные уведомления */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--crimson);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    display: none; /* скрыто по умолчанию */
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.toast.success { background-color: var(--green); }
+
+/* карточки заявок */
+.booking-card {
+    background: white;
+    border-left: 5px solid var(--gold);
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* слайдер */
 .slider-container {
     position: relative;
     width: 100%;
-    height: 200px;
+    max-width: 600px;
+    height: 300px;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto;
+    border-radius: 8px;
 }
-.slider-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+.slider-img { width: 100%; height: 100%; object-fit: cover; }
 .slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    background: rgba(255,255,255,0.7);
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 40px; background: rgba(255,255,255,0.7); color: black; border-radius: 50%;
 }
-.slider-btn.left { left: 0; }
-.slider-btn.right { right: 0; }
+.slider-btn.left { left: 10px; }
+.slider-btn.right { right: 10px; }
 
-/* модалка админа */
-.modal {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border: 2px solid var(--crimson);
+/* адаптив под мобилку */
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 10px; }
+    .nav-links { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+    .nav-links a { margin: 0; width: 100%; text-align: center; padding: 10px 0; background: rgba(0,0,0,0.05); }
+    h1 { font-size: 28px; }
+    .slider-container { height: 200px; }
 }

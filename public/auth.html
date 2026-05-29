@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html"><img src="images/05.png" alt="логотип" class="logo"></a>
+        <div class="nav-links"><a href="index.html">На главную</a></div>
+    </nav>
+
+    <div class="container">
+        <div class="form-card" id="login-section">
+            <h2>Вход</h2>
+            <form onsubmit="auth(event)">
+                <input type="text" id="login" placeholder="Логин" required>
+                <input type="password" id="password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+            </form>
+            <p class="subtext">Нет аккаунта? <a href="#" onclick="toggleAuth()">Регистрация</a></p>
+        </div>
+
+        <div class="form-card" id="register-section" style="display: none;">
+            <h2>Регистрация</h2>
+            <form onsubmit="reg(event)">
+                <input type="text" id="reg-fio" placeholder="ФИО" required>
+                <input type="text" id="reg-phone" placeholder="Телефон" required>
+                <input type="email" id="reg-email" placeholder="E-mail" required>
+                <input type="text" id="reg-login" placeholder="Логин (от 6 симв.)" required minlength="6">
+                <input type="password" id="reg-password" placeholder="Пароль (от 8 симв.)" required minlength="8">
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+            <p class="subtext">Есть аккаунт? <a href="#" onclick="toggleAuth()">Вход</a></p>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">сообщение</div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
