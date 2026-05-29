@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Банкетам.Нет - Вход</title>
+</head>
+<body>
+    <div id="login-section">
+        <h2>Вход в систему</h2>
+        <form id="loginForm">
+            <input type="text" id="login" placeholder="Логин" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
+        </form>
+        <p>Еще не зарегистрированы? <a href="#" onclick="toggleAuth()">Регистрация</a></p>
+    </div>
+
+    <div id="register-section" style="display: none;">
+        <h2>Регистрация</h2>
+        <form id="registerForm">
+            <input type="text" id="reg-fio" placeholder="ФИО" required>
+            <input type="text" id="reg-phone" placeholder="Телефон" required>
+            <input type="email" id="reg-email" placeholder="E-mail" required>
+            <input type="text" id="reg-login" placeholder="Логин (от 6 симв., латиница и цифры)" required minlength="6">
+            <input type="password" id="reg-password" placeholder="Пароль (от 8 симв.)" required minlength="8">
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="#" onclick="toggleAuth()">Вход</a></p>
+    </div>
+
+    <script>
+        function toggleAuth() {
+            const loginSec = document.getElementById('login-section');
+            const regSec = document.getElementById('register-section');
+            if (loginSec.style.display === 'none') {
+                loginSec.style.display = 'block';
+                regSec.style.display = 'none';
+            } else {
+                loginSec.style.display = 'none';
+                regSec.style.display = 'block';
+            }
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+</head>
+<body>
+    <h2>Личный кабинет</h2>
+    
+    <h3>Создать заявку</h3>
+    <form id="bookingForm">
+        <label>Помещение:</label>
+        <select id="hall_id" required>
+            <option value="1">Зал</option>
+            <option value="2">Ресторан</option>
+            <option value="3">Летняя веранда</option>
+            <option value="4">Закрытая веранда</option>
+        </select>
+        <label>Дата банкета:</label>
+        <input type="date" id="start_date" required>
+        <label>Способ оплаты:</label>
+        <select id="payment_method" required>
+            <option value="Оплата картой">Оплата картой</option>
+            <option value="Наличные">Наличные</option>
+        </select>
+        <button type="submit">Отправить заявку</button>
+    </form>
+
+    <h3>Мои заявки</h3>
+    <div id="my-bookings">
+        </div>
+</body>
+</html>
