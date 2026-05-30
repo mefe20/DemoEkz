@@ -1,0 +1,18 @@
+НАСТРОЙКА ПРОЕКТА (Терминал VS Code)
+npm init -y
+npm install express pg cors dotenv bcrypt jsonwebtoken
+npm install --save-dev nodemon
+
+ШАГ 3: ФАЙЛ .env
+DB_USER=postgres
+DB_PASSWORD=тут_ваш_пароль
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=banketam_db
+PORT=3000
+JWT_SECRET=super_secret_exam_key
+
+ШАГ 4: ЗАПУСК
+npm run dev
+
+ВНИМАНИЕ: Не забыть сделать экспорт ER-диаграммы из pgAdmin (ПКМ по базе -> ERD For Database) и сохранить картинку в папку проекта!
