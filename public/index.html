@@ -8,17 +8,30 @@
 </head>
 <body>
     <nav class="navbar">
-        <img src="images/05.png" alt="логотип" class="logo">
-        <div class="nav-links" id="nav-menu">
-            </div>
+        <a href="index.html"><img src="images/05.png" alt="логотип" class="logo"></a>
+        <div class="nav-links" id="nav-menu"></div>
     </nav>
 
     <div class="container" style="text-align: center;">
-        <h1>Добро пожаловать в Банкетам.Нет</h1>
-        <h2>Идеальное место для вашего праздника</h2>
-        <p>Бронируйте залы, рестораны и веранды в пару кликов.</p>
-        <button onclick="window.location.href='auth.html'" style="max-width: 200px;">Начать</button>
+        <h1>Ваш идеальный праздник начинается здесь</h1>
+        <p class="subtext">Бронируйте лучшие рестораны и залы.</p>
+        <button onclick="window.location.href='auth.html'" style="max-width: 250px; margin: 20px 0;">Забронировать сейчас</button>
+        
+        <h2>Гарантия качества</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px;">
+            <img src="quality_img/1.jpg" style="width: 100%; max-width: 300px; border-radius: 8px;" alt="качество">
+            <img src="quality_img/2.jpg" style="width: 100%; max-width: 300px; border-radius: 8px;" alt="качество">
+            <img src="quality_img/3.jpg" style="width: 100%; max-width: 300px; border-radius: 8px;" alt="качество">
+        </div>
     </div>
+
+    <footer class="footer">
+        <p>© 2026 Банкетам.Нет.</p>
+        <div class="social-icons">
+            <a href="#"><img src="social/vk.png" alt="ВК"></a>
+            <a href="#"><img src="social/ok.png" alt="Одноклассники"></a>
+        </div>
+    </footer>
 
     <script src="js/app.js"></script>
 </body>

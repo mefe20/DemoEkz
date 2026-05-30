@@ -31,3 +31,9 @@ INSERT INTO Halls (name) VALUES
 ('Ресторан'), 
 ('Летняя веранда'), 
 ('Закрытая веранда');
+
+
+
+
+
+ALTER TABLE Bookings ADD COLUMN review TEXT;

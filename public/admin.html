@@ -3,49 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ Панель</title>
+    <title>Панель Администратора</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <img src="images/05.png" alt="логотип" class="logo">
-    <h2>Управление заявками</h2>
-    
-    <select id="statusFilter" onchange="filterData()">
-        <option value="all">Все статусы</option>
-        <option value="Новая">Новая</option>
-        <option value="Банкет назначен">Банкет назначен</option>
-        <option value="Банкет завершен">Банкет завершен</option>
-    </select>
-    <button onclick="sortData()">Сортировать по дате</button>
+    <nav class="navbar">
+        <a href="index.html"><img src="images/05.png" alt="Логотип" class="logo"></a>
+        <div class="nav-links"><a href="#" onclick="logout()">Выйти</a></div>
+    </nav>
 
-    <div id="admin-list">
-        <p class="subtext order-item" data-status="Новая">ID 1 | Иванов | Новая 
-            <button onclick="showModal()">изменить</button>
-        </p>
+    <div class="container">
+        <h2>Управление заявками</h2>
+        
+        <div class="admin-filters">
+            <input type="text" id="searchInput" placeholder="Поиск по клиенту или телефону..." oninput="loadAdminBookings()">
+            <select id="statusFilter" onchange="loadAdminBookings()">
+                <option value="all">Все статусы</option>
+                <option value="Новая">Новая</option>
+                <option value="Банкет назначен">Банкет назначен</option>
+                <option value="Банкет завершен">Банкет завершен</option>
+            </select>
+            <select id="hallFilter" onchange="loadAdminBookings()">
+                <option value="all">Все залы</option>
+                <option value="Зал">Зал</option>
+                <option value="Ресторан">Ресторан</option>
+                <option value="Летняя веранда">Летняя веранда</option>
+                <option value="Закрытая веранда">Закрытая веранда</option>
+            </select>
+        </div>
+
+        <div id="admin-list"><p>Загрузка...</p></div>
     </div>
 
-    <div>
-        <button onclick="prevPage()">пред</button>
-        <span id="pageNum" class="subtext">1</span>
-        <button onclick="nextPage()">след</button>
-    </div>
+    <div id="toast" class="toast">сообщение</div>
+    <script src="js/app.js"></script>
+<script>
+        if(localStorage.getItem('role') !== 'admin') window.location.href = 'index.html';
 
-    <div id="alertModal" class="modal">
-        <h3>статус обновлен</h3>
-        <button onclick="closeModal()">ок</button>
-    </div>
+        async function loadAdminBookings() {
+            try {
+                const res = await fetch('/api/bookings');
+                let data = await res.json();
+                
+                const search = document.getElementById('searchInput').value.toLowerCase();
+                const statusF = document.getElementById('statusFilter').value;
+                const hallF = document.getElementById('hallFilter').value;
 
-    <script>
-        function filterData() {
-            // тут логика скрытия элементов по классу
+                if(search) data = data.filter(b => b.fio.toLowerCase().includes(search));
+                if(statusF !== 'all') data = data.filter(b => b.status === statusF);
+                if(hallF !== 'all') data = data.filter(b => b.hall_name === hallF);
+
+                const container = document.getElementById('admin-list');
+                container.innerHTML = '';
+
+                if(data.length === 0) return container.innerHTML = '<p>Заявок не найдено.</p>';
+
+                data.forEach(b => {
+                    const date = new Date(b.start_date).toLocaleDateString('ru-RU');
+                    const rev = (b.review && b.review !== 'null') ? `<p class="subtext">Отзыв: ${b.review}</p>` : '';
+                    
+                    container.innerHTML += `
+                        <div class="booking-card">
+                            <div class="booking-info">
+                                <h3>Заявка #${b.id} — ${b.hall_name}</h3>
+                                <p>Клиент: <strong>${b.fio}</strong></p>
+                                <p>Дата: ${date} | Оплата: ${b.payment_method}</p>
+                                <p>Статус: <strong style="color: var(--crimson)">${b.status}</strong></p>
+                                ${rev}
+                            </div>
+                            <div class="booking-actions">
+                                <select onchange="updateStatus(${b.id}, this.value)">
+                                    <option value="" disabled selected>Сменить статус</option>
+                                    <option value="Новая">Новая</option>
+                                    <option value="Банкет назначен">Банкет назначен</option>
+                                    <option value="Банкет завершен">Банкет завершен</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch(e) { console.error(e); }
         }
-        function sortData() {
-            // тут логика сортировки массива
+
+        async function updateStatus(id, newStatus) {
+            try {
+                const res = await fetch(`/api/bookings/${id}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if(res.ok) {
+                    showToast('Статус обновлен!', 'success');
+                    loadAdminBookings();
+                }
+            } catch(e) { showToast('Ошибка сервера'); }
         }
-        function showModal() { document.getElementById('alertModal').style.display = 'block'; }
-        function closeModal() { document.getElementById('alertModal').style.display = 'none'; }
-        function prevPage() {}
-        function nextPage() {}
+
+        loadAdminBookings();
     </script>
 </body>
 </html>

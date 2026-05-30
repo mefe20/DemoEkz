@@ -1,22 +1,12 @@
-// функция для красивых уведомлений (вместо alert)
 function showToast(msg, type = 'error') {
     const toast = document.getElementById('toast');
     if(!toast) return;
     toast.innerText = msg;
     toast.className = `toast ${type}`;
     toast.style.display = 'block';
-    
-    // плавная анимация появления
-    setTimeout(() => toast.style.opacity = '1', 10);
-    
-    // скрываем через 3 секунды
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => toast.style.display = 'none', 300);
-    }, 3000);
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
 }
 
-// переключение между входом и регистрацией
 function toggleAuth() {
     const loginSec = document.getElementById('login-section');
     const regSec = document.getElementById('register-section');
@@ -24,7 +14,6 @@ function toggleAuth() {
     regSec.style.display = regSec.style.display === 'none' ? 'block' : 'none';
 }
 
-// логика входа
 async function auth(e) {
     e.preventDefault();
     const login = document.getElementById('login').value;
@@ -42,13 +31,10 @@ async function auth(e) {
             localStorage.setItem('userId', data.userId);
             localStorage.setItem('role', data.role);
             window.location.href = data.role === 'admin' ? 'admin.html' : 'dashboard.html';
-        } else {
-            showToast(data.error);
-        }
-    } catch (err) { showToast('ошибка сервера'); }
+        } else { showToast(data.error); }
+    } catch (err) { showToast('Ошибка сети'); }
 }
 
-// логика регистрации
 async function reg(e) {
     e.preventDefault();
     const reqData = {
@@ -68,19 +54,16 @@ async function reg(e) {
         const data = await res.json();
 
         if(res.ok) {
-            showToast('успешно! теперь войдите', 'success');
+            showToast('Успешно! Теперь войдите', 'success');
             setTimeout(() => toggleAuth(), 1500);
-        } else {
-            showToast(data.error);
-        }
-    } catch(err) { showToast('ошибка сервера'); }
+        } else { showToast(data.error); }
+    } catch(err) { showToast('Ошибка сети'); }
 }
 
-// логика создания заявки
 async function createBooking(e) {
     e.preventDefault();
     const userId = localStorage.getItem('userId');
-    if(!userId) return showToast('сначала войдите в систему');
+    if(!userId) return showToast('Сначала войдите');
 
     const reqData = {
         user_id: userId,
@@ -97,21 +80,17 @@ async function createBooking(e) {
         });
         
         if(res.ok) {
-            showToast('заявка отправлена!', 'success');
+            showToast('Заявка отправлена!', 'success');
             setTimeout(() => window.location.href = 'dashboard.html', 1500);
-        } else {
-            showToast('ошибка при создании');
-        }
-    } catch(err) { showToast('ошибка сервера'); }
+        } else { showToast('Ошибка при создании'); }
+    } catch(err) { showToast('Ошибка сети'); }
 }
 
-// выход
 function logout() {
     localStorage.clear();
     window.location.href = 'index.html';
 }
 
-// динамическое меню для главной страницы
 window.onload = () => {
     const navMenu = document.getElementById('nav-menu');
     if(navMenu) {

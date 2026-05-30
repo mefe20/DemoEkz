@@ -57,3 +57,15 @@ exports.updateStatus = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+// оставить или изменить отзыв
+exports.addReview = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { review } = req.body;
+        await pool.query('UPDATE Bookings SET review = $1 WHERE id = $2', [review, id]);
+        res.status(200).json({ message: 'отзыв сохранен' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
