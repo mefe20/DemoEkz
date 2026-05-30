@@ -8,7 +8,17 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navbar"><a href="index.html"><img src="images/05.png" class="logo" alt="Лого"></a><div class="nav-links"><a href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Выйти</a></div></nav>
+ <nav class="navbar">
+        <a href="index.html" class="brand">
+            <img src="images/05.png" alt="Лого" class="logo">
+            <span class="brand-title">Банкетам.Нет</span>
+        </a>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="bi bi-list"></i>
+        </div>
+        <div class="nav-links" id="nav-menu"></div>
+    </nav>
+
     <div class="container">
         <h2>Управление заявками</h2>
         <div class="admin-filters">
@@ -23,12 +33,18 @@
         </div>
         <div id="admin-list"><p>Загрузка...</p></div>
     </div>
-    <footer class="footer"><p>© 2026 Банкетам.Нет.</p></footer><div id="toast" class="toast"></div><script src="js/app.js"></script>
+
+    <footer class="footer">
+        <div><p>© 2026 Банкетам.Нет.</p></div>
+        <div class="social-icons"><a href="#"><img src="social/soc.png" alt="Соцсети"></a></div>
+    </footer>
+    <div id="toast" class="toast"></div>
+
+    <script src="js/app.js"></script>
     <script>
         if(localStorage.getItem('role') !== 'admin') window.location.href = 'index.html';
         
-        let sortDesc = true; // по умолчанию сначала новые
-
+        let sortDesc = true;
         function toggleSort() {
             sortDesc = !sortDesc;
             document.getElementById('sortBtn').innerHTML = sortDesc ? '<i class="bi bi-sort-down"></i> Сначала новые' : '<i class="bi bi-sort-up"></i> Сначала старые';
@@ -37,19 +53,18 @@
 
         async function loadAdminBookings() {
             try {
-                const res = await fetch('/api/admin/bookings', { headers: getAuthHeaders() }); let data = await res.json();
+                const res = await fetch('/api/bookings'); let data = await res.json();
                 const search = document.getElementById('searchInput').value.toLowerCase();
                 const statusF = document.getElementById('statusFilter').value;
                 const hallF = document.getElementById('hallFilter').value;
 
-                if(search) data = data.filter(b => b.full_name.toLowerCase().includes(search));
+                if(search) data = data.filter(b => b.fio.toLowerCase().includes(search));
                 if(statusF !== 'all') data = data.filter(b => b.status === statusF);
-                if(hallF !== 'all') data = data.filter(b => b.room_name === hallF);
+                if(hallF !== 'all') data = data.filter(b => b.hall_name === hallF);
 
-                // Применяем сортировку
                 data.sort((a, b) => {
-                    const dateA = new Date(a.event_date).getTime();
-                    const dateB = new Date(b.event_date).getTime();
+                    const dateA = new Date(a.start_date).getTime();
+                    const dateB = new Date(b.start_date).getTime();
                     return sortDesc ? dateB - dateA : dateA - dateB;
                 });
 
@@ -57,15 +72,15 @@
                 if(data.length === 0) return container.innerHTML = '<p>Заявок не найдено.</p>';
 
                 data.forEach(b => {
-                    const date = new Date(b.event_date).toLocaleDateString('ru-RU');
-                    const rev = (b.review_text && b.review_text !== 'null') ? `<div class="review-box"><p class="subtext" style="margin:0;"><i class="bi bi-chat-left-text"></i> Отзыв: ${b.review_text}</p></div>` : '';
-                    container.innerHTML += `<div class="booking-card"><div class="booking-info"><h3>Заявка #${b.id} — <i class="bi bi-shop"></i> ${b.room_name}</h3><p><i class="bi bi-person-fill"></i> Клиент: <strong>${b.full_name}</strong> (${b.phone})</p><p><i class="bi bi-calendar-event"></i> Дата: ${date} | <i class="bi bi-credit-card"></i> Оплата: ${b.payment_method}</p><p><i class="bi bi-info-circle"></i> Статус: <strong style="color: var(--crimson)">${b.status}</strong></p>${rev}</div><div class="booking-actions"><select onchange="updateStatus(${b.id}, this.value)"><option value="" disabled selected>Сменить статус</option><option value="Новая">Новая</option><option value="Банкет назначен">Банкет назначен</option><option value="Банкет завершен">Банкет завершен</option></select></div></div>`;
+                    const date = new Date(b.start_date).toLocaleDateString('ru-RU');
+                    const rev = (b.review && b.review !== 'null') ? `<div class="review-box"><p class="subtext" style="margin:0;"><i class="bi bi-chat-left-text"></i> Отзыв: ${b.review}</p></div>` : '';
+                    container.innerHTML += `<div class="booking-card"><div class="booking-info"><h3>Заявка #${b.id} — <i class="bi bi-shop"></i> ${b.hall_name}</h3><p><i class="bi bi-person-fill"></i> Клиент: <strong>${b.fio}</strong> (${b.phone})</p><p><i class="bi bi-calendar-event"></i> Дата: ${date} | <i class="bi bi-credit-card"></i> Оплата: ${b.payment_method}</p><p><i class="bi bi-info-circle"></i> Статус: <strong style="color: var(--crimson)">${b.status}</strong></p>${rev}</div><div class="booking-actions"><select onchange="updateStatus(${b.id}, this.value)"><option value="" disabled selected>Сменить статус</option><option value="Новая">Новая</option><option value="Банкет назначен">Банкет назначен</option><option value="Банкет завершен">Банкет завершен</option></select></div></div>`;
                 });
             } catch(e) { console.error(e); }
         }
         
         async function updateStatus(id, newStatus) {
-            try { const res = await fetch(`/api/admin/bookings/${id}/status`, { method: 'PUT', headers: getAuthHeaders(), body: JSON.stringify({ status: newStatus }) });
+            try { const res = await fetch(`/api/bookings/${id}/status`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: newStatus }) });
                 if(res.ok) { showToast('Статус обновлен!', 'success'); loadAdminBookings(); }
             } catch(e) {}
         }

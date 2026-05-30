@@ -4,8 +4,12 @@ html, body { overflow-x: hidden; }
 :root { --gold: #DAA520; --rose: #FFDAB9; --cream: #FFFDD0; --crimson: #DC143C; --green: #006400; --text-main: #1a1a1a; }
 body { font-family: 'Oswald', sans-serif; background-color: var(--cream); color: var(--text-main); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
 
+/* Навигация и Логотип */
 .navbar { background-color: var(--gold); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-.navbar .logo { width: 90px; height: auto; }
+.brand { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+.navbar .logo { width: 70px; height: auto; }
+.brand-title { color: white; font-size: 26px; font-weight: bold; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+.nav-links { display: flex; align-items: center; flex-wrap: wrap; }
 .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 18px; transition: color 0.3s; }
 .nav-links a:hover { color: var(--crimson); }
 
@@ -15,36 +19,126 @@ h2 { font-size: 24px; color: var(--gold); border-bottom: 2px solid var(--rose); 
 h3 { font-size: 18px; color: var(--gold); margin: 0 0 10px 0; }
 .subtext { font-size: 14px; color: var(--green); margin: 5px 0; }
 
-.form-card { max-width: 400px; margin: 0 auto; }
+/* Окно авторизации */
+.auth-wrapper { display: flex; justify-content: center; align-items: center; min-height: 60vh; width: 100%; }
+.auth-card { width: 100%; max-width: 450px; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 5px solid var(--gold); }
+.auth-card h2 { text-align: center; border-bottom: none; }
+
+/* Формы */
 input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; font-family: 'Oswald', sans-serif; font-size: 16px; border: 2px solid #eee; border-radius: 8px; }
 input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); }
-button { width: 100%; background-color: var(--gold); color: white; border: none; padding: 14px; font-size: 18px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-button:hover { background-color: var(--crimson); transform: translateY(-2px); }
+button { width: 100%; background-color: var(--gold); color: white; border: none; padding: 14px; font-size: 18px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; }
+button:hover { background-color: var(--crimson); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(220, 20, 60, 0.2); }
 
-.booking-card { background: #fff; border: 1px solid var(--rose); border-left: 6px solid var(--gold); padding: 20px; margin-bottom: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+/* Карточки заявок */
+/* Обновленные Карточки заявок (исправлено выравнивание кнопки) */
+.booking-card { 
+    background: #fff; 
+    border: 1px solid var(--rose); 
+    border-left: 6px solid var(--gold); 
+    padding: 20px; 
+    margin-bottom: 15px; 
+    border-radius: 10px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; /* Прижали содержимое к верхнему краю */
+    gap: 20px; 
+}
 .booking-info { flex: 1; }
-.booking-actions { width: 100%; max-width: 200px; }
-.review-box { background: rgba(255, 218, 185, 0.3); padding: 12px; border-radius: 8px; margin-top: 10px; border-left: 4px solid var(--gold); }
+.booking-actions { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: flex-end; /* Кнопка аккуратно прижата к правому краю */
+    width: 100%; 
+    max-width: 180px; 
+    gap: 10px; 
+    margin-top: 10px; 
+}
+.review-box { background: rgba(255, 218, 185, 0.3); padding: 12px; border-radius: 8px; margin-top: 10px; border-left: 4px solid var(--gold); width: 100%; }
 .admin-filters { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; background: #fafafa; padding: 15px; border-radius: 10px; }
 .admin-filters input, .admin-filters select { margin-bottom: 0; flex: 1; min-width: 200px; }
 
-.slider-container { position: relative; width: 100%; max-width: 700px; height: 300px; margin: 0 auto 20px auto; border-radius: 16px; overflow: hidden; background: #000; }
+/* Слайдер (Обновленные стрелки) */
+.slider-container { position: relative; width: 100%; max-width: 700px; height: 350px; margin: 0 auto 20px auto; border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 .slider-img { width: 100%; height: 100%; object-fit: cover; }
-.slider-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.8); color: var(--crimson); border: none; font-size: 20px; cursor: pointer; }
-.slider-btn.left { left: 10px; } .slider-btn.right { right: 10px; }
-.slider-btn:hover { background: white; transform: translateY(-50%); }
+.slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; color: white; border: none; font-size: 40px; cursor: pointer; text-shadow: 0 2px 5px rgba(0,0,0,0.7); transition: transform 0.2s, color 0.2s; padding: 0 15px; width: auto; box-shadow: none; }
+.slider-btn.left { left: 0; } .slider-btn.right { right: 0; }
+.slider-btn:hover { background: transparent; color: var(--gold); transform: translateY(-50%) scale(1.1); box-shadow: none; }
 
+/* Гарантия качества (Сетка иконок) */
+.quality-grid { display: block; margin: 30px auto; width: 100%; max-width: 800px; height: auto; }
+
+/* Подвал */
 .footer { background-color: var(--gold); color: white; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: auto; }
-.social-icons img { width: 30px; margin-left: 10px; }
 
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100; }
 .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; }
 .toast { position: fixed; bottom: 30px; right: 30px; background-color: var(--crimson); color: white; padding: 15px 25px; border-radius: 8px; display: none; z-index: 1000; }
 .toast.success { background-color: var(--green); }
 
+/* --- СТИЛИ ДЛЯ ГАМБУРГЕР-МЕНЮ И СОЦСЕТЕЙ --- */
+.menu-toggle { display: none; font-size: 32px; color: white; cursor: pointer; transition: color 0.3s; }
+.menu-toggle:hover { color: var(--crimson); }
+
+/* Выкручиваем размер соцсетей на максимум */
+.social-icons { display: flex; align-items: center; justify-content: center; }
+.social-icons img { 
+    height: 70px; /* Жестко задаем высоту */
+    width: auto;
+    transform: scale(1.5); /* Искусственно увеличиваем картинку, срезая прозрачные края */
+    transition: transform 0.3s; 
+    cursor: pointer;
+}
+.social-icons img:hover { transform: scale(1.6); }
+
+/* --- МОБИЛЬНЫЙ АДАПТИВ (МАГИЯ ГАМБУРГЕРА) --- */
 @media (max-width: 768px) {
-    .navbar { flex-direction: column; gap: 15px; } .nav-links { display: flex; flex-direction: column; width: 100%; text-align: center; gap: 10px; }
-    .nav-links a { margin: 0; background: rgba(0,0,0,0.05); padding: 10px; }
-    .booking-card { flex-direction: column; align-items: stretch; } .booking-actions { max-width: 100%; margin-top: 10px; }
-    .slider-container { height: 200px; } .footer { flex-direction: column; text-align: center; gap: 10px; }
+    /* Шапка: логотип слева, гамбургер справа */
+    .navbar { flex-direction: row; flex-wrap: wrap; padding: 15px 20px; align-items: center; justify-content: space-between; }
+    .brand { flex-direction: row; margin-bottom: 0; gap: 10px; }
+    .brand-title { font-size: 20px; }
+    .navbar .logo { width: 45px; }
+
+    /* Показываем кнопку меню */
+    .menu-toggle { display: block; }
+
+    /* Скрываем само меню по умолчанию */
+    .nav-links { 
+        display: none; 
+        width: 100%; 
+        flex-direction: column; 
+        text-align: center; 
+        gap: 0; 
+        margin-top: 15px; 
+        background: rgba(0,0,0,0.1); 
+        border-radius: 8px; 
+        overflow: hidden;
+    }
+    
+    /* Класс, который JS добавит при клике (с анимацией) */
+    .nav-links.active { 
+        display: flex; 
+        animation: fadeInDown 0.3s ease forwards;
+    }
+
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-links a { margin: 0; padding: 15px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); border-radius: 0; background: transparent; }
+    .nav-links a:last-child { border-bottom: none; }
+    .nav-links a:hover { background: rgba(255,255,255,0.1); }
+
+    /* Остальной адаптив */
+    .container { width: 95%; padding: 20px; margin: 15px auto; }
+    .booking-card { flex-direction: column; align-items: stretch; gap: 10px; } 
+    .booking-actions { max-width: 100%; margin-top: 5px; align-items: stretch; }
+    .slider-container { height: 220px; } 
+    
+    /* Компактный подвал */
+    .footer { flex-direction: column; text-align: center; gap: 5px; padding: 15px; }
+    .footer p { font-size: 12px; margin: 0; }
+    .social-icons img { height: 50px; transform: scale(1.3); margin-top: 5px; }
 }

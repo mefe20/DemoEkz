@@ -51,14 +51,44 @@ async function createBooking(e) {
     } catch(err) { showToast('Сервер недоступен'); }
 }
 
-function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+window.logout = function() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
+    window.location.replace('index.html');
+};
 
 window.onload = () => {
     const navMenu = document.getElementById('nav-menu');
+    
     if(navMenu) {
         const role = localStorage.getItem('role');
-        if(role === 'admin') navMenu.innerHTML = '<a href="admin.html"><i class="bi bi-speedometer2"></i> Админка</a> <a href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Выйти</a>';
-        else if(role === 'user') navMenu.innerHTML = '<a href="dashboard.html"><i class="bi bi-person-badge"></i> Личный кабинет</a> <a href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Выйти</a>';
-        else navMenu.innerHTML = '<a href="auth.html"><i class="bi bi-box-arrow-in-right"></i> Вход / Регистрация</a>';
+        const homeLink = '<a href="index.html"><i class="bi bi-house-door"></i> Главная</a>';
+        const locationLink = '<a href="location.html"><i class="bi bi-geo-alt"></i> Контакты</a>';
+        
+        if(role === 'admin') {
+            navMenu.innerHTML = `${homeLink} ${locationLink} <a href="admin.html"><i class="bi bi-speedometer2"></i> Админка</a> <a href="#" onclick="event.preventDefault(); logout()"><i class="bi bi-box-arrow-right"></i> Выйти</a>`;
+        } else if(role === 'user') {
+            navMenu.innerHTML = `${homeLink} ${locationLink} <a href="dashboard.html"><i class="bi bi-person-badge"></i> Кабинет</a> <a href="create.html"><i class="bi bi-plus-circle"></i> Заявка</a> <a href="#" onclick="event.preventDefault(); logout()"><i class="bi bi-box-arrow-right"></i> Выйти</a>`;
+        } else {
+            navMenu.innerHTML = `${homeLink} ${locationLink} <a href="auth.html"><i class="bi bi-box-arrow-in-right"></i> Вход</a>`;
+        }
+    }
+
+    // Логика гамбургер-меню для мобилок
+    const menuToggle = document.getElementById('menu-toggle');
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            // Меняем иконку (три полоски на крестик и обратно)
+            const icon = menuToggle.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('bi-list');
+                icon.classList.add('bi-x-lg');
+            } else {
+                icon.classList.remove('bi-x-lg');
+                icon.classList.add('bi-list');
+            }
+        });
     }
 };

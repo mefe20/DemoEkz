@@ -1,5 +1,5 @@
-const { Pool } = require('pg');
 require('dotenv').config();
+const { Pool } = require('pg');
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -7,6 +7,10 @@ const pool = new Pool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     database: process.env.DB_NAME
+});
+
+pool.on('error', (err, client) => {
+    console.error('Неожиданная ошибка базы данных (сервер продолжает работу):', err);
 });
 
 module.exports = pool;

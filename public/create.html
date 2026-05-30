@@ -8,18 +8,42 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navbar"><a href="index.html"><img src="images/05.png" class="logo"></a><div class="nav-links"><a href="dashboard.html">Назад</a></div></nav>
+<nav class="navbar">
+        <a href="index.html" class="brand">
+            <img src="images/05.png" alt="Лого" class="logo">
+            <span class="brand-title">Банкетам.Нет</span>
+        </a>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="bi bi-list"></i>
+        </div>
+        <div class="nav-links" id="nav-menu"></div>
+    </nav>
+
     <div class="container form-card">
         <h2>Оформление заявки</h2>
         <form onsubmit="createBooking(event)">
             <label class="subtext">Выберите помещение:</label>
-            <select id="hall_id" required><option value="" disabled selected>Не выбрано</option><option value="1">Зал</option><option value="2">Ресторан</option><option value="3">Летняя веранда</option><option value="4">Закрытая веранда</option></select>
-            <label class="subtext">Дата банкета:</label><input type="date" id="start_date" required>
+            <select id="hall_id" required>
+                <option value="" disabled selected>Не выбрано</option>
+                <option value="1">Зал</option><option value="2">Ресторан</option><option value="3">Летняя веранда</option><option value="4">Закрытая веранда</option>
+            </select>
+            <label class="subtext">Дата банкета:</label>
+            <input type="date" id="start_date" required>
             <label class="subtext">Способ оплаты:</label>
-            <select id="payment_method" required><option value="" disabled selected>Выберите способ оплаты</option><option value="QR-код">Предоплата по QR-коду</option><option value="Карта МИР">Оплата картой МИР</option><option value="Постоплата">Постоплата в офисе</option></select>
+            <select id="payment_method" required>
+                <option value="" disabled selected>Выберите способ оплаты</option>
+                <option value="QR-код">Предоплата по QR-коду</option><option value="Карта МИР">Оплата картой МИР</option><option value="Постоплата">Постоплата в офисе</option>
+            </select>
             <button type="submit">Отправить заявку</button>
         </form>
     </div>
-    <footer class="footer"><p>© 2026 Банкетам.Нет.</p></footer><div id="toast" class="toast"></div><script src="js/app.js"></script>
+
+    <footer class="footer">
+        <div><p>© 2026 Банкетам.Нет.</p></div>
+        <div class="social-icons"><a href="#"><img src="social/soc.png" alt="Соцсети"></a></div>
+    </footer>
+    <div id="toast" class="toast"></div>
+
+    <script src="js/app.js"></script>
 </body>
 </html>

@@ -1,18 +1,89 @@
-НАСТРОЙКА ПРОЕКТА (Терминал VS Code)
-npm init -y
-npm install express pg cors dotenv bcrypt jsonwebtoken
-npm install --save-dev nodemon
+========================================
+ЭТАП 0: ПОДГОТОВКА И ЗАПУСК
+========================================
+1. Открыть терминал в папке проекта:
+   npm init -y
+   npm install express pg cors dotenv bcrypt jsonwebtoken
+   npm install --save-dev nodemon
 
-ШАГ 3: ФАЙЛ .env
-DB_USER=postgres
-DB_PASSWORD=тут_ваш_пароль
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=banketam_db
-PORT=3000
-JWT_SECRET=super_secret_exam_key
+2. Создать файл .env:
+   DB_USER=postgres
+   DB_PASSWORD=твой_пароль_от_бд
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=banketam_db
+   PORT=3000
 
-ШАГ 4: ЗАПУСК
+3. В файле package.json в блок scripts добавить:
+   "start": "node server.js",
+   "dev": "nodemon server.js"
+
+4. Выполнить команду инициализации Git:
+   git init
+
+========================================
+ЭТАП 1: МОДУЛЬ 1 (БАЗА И БЭКЕНД)
+========================================
+1. В pgAdmin 4 выполнить этот SQL-запрос:
+   CREATE TABLE Users ( id SERIAL PRIMARY KEY, fio VARCHAR(255) NOT NULL, phone VARCHAR(20) NOT NULL, email VARCHAR(255) NOT NULL, login VARCHAR(50) UNIQUE NOT NULL, password VARCHAR(255) NOT NULL, role VARCHAR(20) DEFAULT 'user');
+   CREATE TABLE Halls ( id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL);
+   CREATE TABLE Bookings ( id SERIAL PRIMARY KEY, user_id INT REFERENCES Users(id), hall_id INT REFERENCES Halls(id), start_date DATE NOT NULL, payment_method VARCHAR(50), status VARCHAR(50) DEFAULT 'Новая', review TEXT);
+   INSERT INTO Halls (name) VALUES ('Зал'), ('Ресторан'), ('Летняя веранда'), ('Закрытая веранда');
+
+   -> ВАЖНО: Сделать скриншот ER-диаграммы (ПКМ по базе -> ERD For Database) и сохранить в проект.
+
+2. Создать файлы server.js, db.js и базовые HTML файлы.
+3. Ввести в терминал (Коммит 1 - База):
+   git add .
+   git commit -m "init: настройка бд и структуры проекта"
+
+4. Написать логику API в server.js.
+5. Ввести в терминал (Коммит 2 - Логика бэкенда):
+   git add .
+   git commit -m "feat: добавлено api авторизации и заявок"
+
+6. Сверстать базовые HTML-страницы.
+7. Ввести в терминал (Коммит 3 - Завершение Модуля 1):
+   git add .
+   git commit -m "feat: базовый интерфейс системы бронирования"
+
+========================================
+ЭТАП 2: МОДУЛЬ 2 (ДИЗАЙН И АДАПТИВ)
+========================================
+1. Добавить файл style.css с цветами из брендбука и шрифтом Oswald.
+2. Ввести в терминал (Коммит 4 - Стили):
+   git add .
+   git commit -m "style: применение брендбука и настройка адаптива"
+
+3. Написать логику JS для слайдера в dashboard.html.
+4. Ввести в терминал (Коммит 5 - Слайдер):
+   git add .
+   git commit -m "feat: интеграция автоматического слайдера"
+
+5. Добавить в админку фильтры и сортировку по дате.
+6. Ввести в терминал (Коммит 6 - Завершение Модуля 2):
+   git add .
+   git commit -m "feat: инструменты панели администратора (поиск, фильтры, сортировка)"
+
+========================================
+ЭТАП 3: МОДУЛЬ 3 (ОПТИМИЗАЦИЯ И УЛУЧШЕНИЯ)
+========================================
+1. Добавить новые способы оплаты в create.html.
+2. Ввести в терминал (Коммит 7 - Оплата):
+   git add .
+   git commit -m "feat: добавлены новые способы оплаты по тз"
+
+3. Добавить контакты, адрес и соцсети в footer.
+4. Ввести в терминал (Коммит 8 - Подвал):
+   git add .
+   git commit -m "feat: обновлен подвал сайта (адрес, телефон, соцсети)"
+
+5. Добавить микроанимации кнопок (hover, translateY) в CSS.
+6. Ввести в терминал (Коммит 9 - Завершение проекта):
+   git add .
+   git commit -m "style: добавлены микроанимации и финальная оптимизация"
+
+========================================
+ЗАПУСК СЕРВЕРА ВО ВРЕМЯ РАБОТЫ:
 npm run dev
-
-ВНИМАНИЕ: Не забыть сделать экспорт ER-диаграммы из pgAdmin (ПКМ по базе -> ERD For Database) и сохранить картинку в папку проекта!
+========================================

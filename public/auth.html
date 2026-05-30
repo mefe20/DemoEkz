@@ -8,31 +8,48 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navbar"><a href="index.html"><img src="images/05.png" alt="Лого" class="logo"></a><div class="nav-links"><a href="index.html">На главную</a></div></nav>
-    <div class="container form-card">
-        <div id="login-section">
-            <h2>Вход в аккаунт</h2>
-            <form onsubmit="auth(event)">
-                <input type="text" id="login" placeholder="Логин" required>
-                <input type="password" id="password" placeholder="Пароль" required>
-                <button type="submit">Войти</button>
-            </form>
-            <p class="subtext" style="text-align:center; margin-top:15px;">Нет аккаунта? <a href="#" onclick="toggleAuth()" style="color:var(--crimson);">Регистрация</a></p>
+<nav class="navbar">
+        <a href="index.html" class="brand">
+            <img src="images/05.png" alt="Лого" class="logo">
+            <span class="brand-title">Банкетам.Нет</span>
+        </a>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="bi bi-list"></i>
         </div>
-        <div id="register-section" style="display: none;">
-            <h2>Создать аккаунт</h2>
-            <form onsubmit="reg(event)">
-                <input type="text" id="reg-fio" placeholder="ФИО" required>
-                <input type="text" id="reg-phone" placeholder="Телефон" required>
-                <input type="email" id="reg-email" placeholder="E-mail" required>
-                <input type="text" id="reg-login" placeholder="Логин (от 6 симв., латиница/цифры)" required minlength="6">
-                <input type="password" id="reg-password" placeholder="Пароль (от 8 симв.)" required minlength="8">
-                <button type="submit">Зарегистрироваться</button>
-            </form>
-            <p class="subtext" style="text-align:center; margin-top:15px;">Есть аккаунт? <a href="#" onclick="toggleAuth()" style="color:var(--crimson);">Вход</a></p>
+        <div class="nav-links" id="nav-menu"></div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div id="login-section">
+                <h2>Вход в аккаунт</h2>
+                <form onsubmit="auth(event)">
+                    <input type="text" id="login" placeholder="Логин" required>
+                    <input type="password" id="password" placeholder="Пароль" required>
+                    <button type="submit">Войти</button>
+                </form>
+                <p class="subtext" style="text-align:center; margin-top:20px; font-size: 16px;">Нет аккаунта? <a href="#" onclick="toggleAuth()" style="color:var(--crimson); font-weight: bold;">Регистрация</a></p>
+            </div>
+            <div id="register-section" style="display: none;">
+                <h2>Создать аккаунт</h2>
+                <form onsubmit="reg(event)">
+                    <input type="text" id="reg-fio" placeholder="ФИО" required>
+                    <input type="text" id="reg-phone" placeholder="Телефон" required>
+                    <input type="email" id="reg-email" placeholder="E-mail" required>
+                    <input type="text" id="reg-login" placeholder="Логин (от 6 симв., латиница/цифры)" required minlength="6">
+                    <input type="password" id="reg-password" placeholder="Пароль (от 8 симв.)" required minlength="8">
+                    <button type="submit">Зарегистрироваться</button>
+                </form>
+                <p class="subtext" style="text-align:center; margin-top:20px; font-size: 16px;">Есть аккаунт? <a href="#" onclick="toggleAuth()" style="color:var(--crimson); font-weight: bold;">Вход</a></p>
+            </div>
         </div>
     </div>
-    <footer class="footer"><div><p>© 2026 Банкетам.Нет.</p></div></footer>
-    <div id="toast" class="toast"></div><script src="js/app.js"></script>
+
+<footer class="footer">
+        <div><p>© 2026 Банкетам.Нет.</p></div>
+        <div class="social-icons"><a href="#"><img src="social/soc.png" alt="VK"></a></div>
+    </footer>
+    <div id="toast" class="toast"></div>
+    <script src="js/app.js"></script>
 </body>
 </html>

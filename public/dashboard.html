@@ -8,17 +8,45 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navbar"><a href="index.html"><img src="images/05.png" class="logo"></a><div class="nav-links"><a href="create.html">Создать заявку</a><a href="#" onclick="logout()">Выйти</a></div></nav>
+<nav class="navbar">
+        <a href="index.html" class="brand">
+            <img src="images/05.png" alt="Лого" class="logo">
+            <span class="brand-title">Банкетам.Нет</span>
+        </a>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="bi bi-list"></i>
+        </div>
+        <div class="nav-links" id="nav-menu"></div>
+    </nav>
+
     <div class="container">
         <h2>Личный кабинет</h2>
-        <div class="slider-container"><button class="slider-btn left" onclick="changeSlide(-1)">❮</button><img src="images/1.jpg" id="slide" class="slider-img"><button class="slider-btn right" onclick="changeSlide(1)">❯</button></div>
-        <h3>Мои заявки</h3><div id="my-bookings"><p>Загрузка...</p></div>
+        <div class="slider-container">
+            <button class="slider-btn left" onclick="changeSlide(-1)">❮</button>
+            <img src="images/1.jpg" id="slide" class="slider-img" alt="Слайд">
+            <button class="slider-btn right" onclick="changeSlide(1)">❯</button>
+        </div>
+        <h3>Мои заявки</h3>
+        <div id="my-bookings"><p>Загрузка...</p></div>
     </div>
-    <div class="modal-overlay" id="reviewOverlay"><div class="modal">
-        <h2>Отзыв</h2><textarea id="reviewText" rows="4"></textarea><input type="hidden" id="reviewBookingId">
-        <button onclick="submitReview()">Сохранить</button><button class="btn-secondary" style="background:#aaa; margin-top:10px;" onclick="closeModal()">Отмена</button>
-    </div></div>
-    <footer class="footer"><p>© 2026 Банкетам.Нет.</p></footer><div id="toast" class="toast"></div><script src="js/app.js"></script>
+
+    <div class="modal-overlay" id="reviewOverlay">
+        <div class="modal">
+            <h2>Отзыв</h2>
+            <textarea id="reviewText" rows="4"></textarea>
+            <input type="hidden" id="reviewBookingId">
+            <button onclick="submitReview()">Сохранить</button>
+            <button class="btn-secondary" style="background:#aaa; margin-top:10px;" onclick="closeModal()">Отмена</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div><p>© 2026 Банкетам.Нет.</p></div>
+        <div class="social-icons"><a href="#"><img src="social/soc.png" alt="Соцсети"></a></div>
+    </footer>
+    <div id="toast" class="toast"></div>
+
+    <script src="js/app.js"></script>
     <script>
         let cur = 1; setInterval(() => { cur = cur > 3 ? 1 : cur + 1; document.getElementById('slide').src = `images/${cur}.jpg`; }, 3000);
         function changeSlide(dir) { cur += dir; if(cur>4) cur=1; if(cur<1) cur=4; document.getElementById('slide').src = `images/${cur}.jpg`; }

@@ -8,18 +8,30 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navbar"><a href="index.html"><img src="images/05.png" alt="Логотип" class="logo"></a><div class="nav-links" id="nav-menu"></div></nav>
+<nav class="navbar">
+        <a href="index.html" class="brand">
+            <img src="images/05.png" alt="Лого" class="logo">
+            <span class="brand-title">Банкетам.Нет</span>
+        </a>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="bi bi-list"></i>
+        </div>
+        <div class="nav-links" id="nav-menu"></div>
+    </nav>
+    
     <div class="container" style="text-align: center;">
         <h1>Ваш идеальный праздник начинается здесь</h1>
-        <p class="subtext" style="font-size:16px;">Бронируйте лучшие рестораны и залы.</p>
-        <button onclick="window.location.href='auth.html'" style="max-width: 250px; margin: 20px 0;">Забронировать сейчас</button>
+        <p class="subtext" style="font-size:18px;">Бронируйте лучшие рестораны и залы.</p>
+        <button onclick="window.location.href='auth.html'" style="max-width: 300px; margin: 25px 0;">Забронировать сейчас</button>
+        
         <h2>Гарантия качества</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
-            <img src="quality_img/1.jpg" style="width: 100%; max-width: 300px; border-radius: 8px;">
-            <img src="quality_img/2.jpg" style="width: 100%; max-width: 300px; border-radius: 8px;">
-        </div>
+        <img src="quality_img/XXL_height.jpg" alt="Гарантия качества" class="quality-grid">
     </div>
-    <footer class="footer"><div><p>г. Москва, ул. Большая Ордынка, д. 15 | +7 (495) 123-45-67</p></div><div class="social-icons"><img src="social/vk.png"><img src="social/ok.png"></div></footer>
+
+    <footer class="footer">
+        <div><p>© 2026 Банкетам.Нет.</p></div>
+        <div class="social-icons"><a href="#"><img src="social/soc.png" alt="VK"></a></div>
+    </footer>
     <script src="js/app.js"></script>
 </body>
 </html>
