@@ -1,0 +1,169 @@
+Разобрался. Проблема в рассогласовании серверного ответа и того, что ожидает фронтенд. В базе теперь таблица Courses, а на фронте везде написано hall_name и hall_id. Из-за этого:
+
+· Админка не видит названия залов (получает course_name, а читает hall_name → undefined).
+· Фильтр по залам не работает.
+· При создании заявки отправляется hall_id, а сервер ждёт cours_id.
+
+Плюс в запросе getAllBookings отсутствует поле phone, а админка пытается его отобразить.
+
+Ниже – конкретные исправления для каждого из присланных файлов.
+
+---
+
+1. Файл app.js (общий клиентский скрипт)
+
+Функция createBooking
+
+Было:
+
+```js
+const reqData = { user_id: userId, hall_id: document.getElementById('hall_id').value, ... };
+```
+
+Стало:
+
+```js
+const reqData = { user_id: userId, cours_id: document.getElementById('cours_id').value, ... };
+```
+
+Также на странице создания заявки (create.html) нужно заменить id="hall_id" на id="cours_id" у <select>.
+
+---
+
+2. Файл admin.html (админ-панель)
+
+Везде меняем hall → course и добавляем phone в вывод.
+
+a) Запрос к серверу (в getAllBookings)
+
+Убедитесь, что сервер уже возвращает course_name и phone.
+В файле сервера (bookingController.js) в запросе getAllBookings должно быть:
+
+```sql
+SELECT b.id, u.fio, u.phone, c.name as course_name, b.start_date, b.status, b.payment_method, b.review
+FROM Bookings b 
+JOIN Users u ON b.user_id = u.id 
+JOIN Courses c ON b.cours_id = c.id
+```
+
+Если вы уже исправили сервер, но оставили алиас course_name, то всё хорошо. Если нет – см. ниже «Правки сервера».
+
+b) Фильтр по залам (hallFilter) → courseFilter
+
+Замените:
+
+```html
+<select id="hallFilter" onchange="loadAdminBookings()">
+    <option value="all">Все залы</option>
+    <option value="Зал">Зал</option>
+    ...
+</select>
+```
+
+на
+
+```html
+<select id="courseFilter" onchange="loadAdminBookings()">
+    <option value="all">Все курсы</option>
+    <option value="Информатика">Информатика</option>
+    <option value="Математика">Математика</option>
+    <!-- здесь впишите названия ваших курсов из таблицы Courses -->
+</select>
+```
+
+(Имена должны совпадать с теми, что в базе. У вас в примере 'Инфа ', но это временно, подставьте реальные.)
+
+c) Обновить JavaScript внутри admin.html
+
+Замените весь <script> на исправленный вариант. Ключевые изменения:
+
+· hallF → courseF, фильтр по b.course_name
+· b.hall_name → b.course_name (в отрисовке)
+· добавить b.phone в карточку (уже было, но теперь точно будет из данных)
+
+Вот полный исправленный <script> для admin.html:
+
+```js
+if(localStorage.getItem('role') !== 'admin') window.location.href = 'index.html';
+
+let sortDesc = true;
+function toggleSort() {
+    sortDesc = !sortDesc;
+    document.getElementById('sortBtn').innerHTML = sortDesc ? '<i class="bi bi-sort-down"></i> Сначала новые' : '<i class="bi bi-sort-up"></i> Сначала старые';
+    loadAdminBookings();
+}
+
+async function loadAdminBookings() {
+    try {
+        const res = await fetch('/api/bookings'); let data = await res.json();
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const statusF = document.getElementById('statusFilter').value;
+        const courseF = document.getElementById('courseFilter').value;   // <-- изменено
+
+        if(search) data = data.filter(b => b.fio.toLowerCase().includes(search));
+        if(statusF !== 'all') data = data.filter(b => b.status === statusF);
+        if(courseF !== 'all') data = data.filter(b => b.course_name === courseF);   // <-- изменено
+
+        data.sort((a, b) => {
+            const dateA = new Date(a.start_date).getTime();
+            const dateB = new Date(b.start_date).getTime();
+            return sortDesc ? dateB - dateA : dateA - dateB;
+        });
+
+        const container = document.getElementById('admin-list'); container.innerHTML = '';
+        if(data.length === 0) return container.innerHTML = '<p>Заявок не найдено.</p>';
+
+        data.forEach(b => {
+            const date = new Date(b.start_date).toLocaleDateString('ru-RU');
+            const rev = (b.review && b.review !== 'null') ? `<div class="review-box"><p class="subtext" style="margin:0;"><i class="bi bi-chat-left-text"></i> Отзыв: ${b.review}</p></div>` : '';
+            container.innerHTML += `<div class="booking-card"><div class="booking-info"><h3>Заявка #${b.id} — <i class="bi bi-shop"></i> ${b.course_name}</h3><p><i class="bi bi-person-fill"></i> Клиент: <strong>${b.fio}</strong> (${b.phone})</p><p><i class="bi bi-calendar-event"></i> Дата: ${date} | <i class="bi bi-credit-card"></i> Оплата: ${b.payment_method}</p><p><i class="bi bi-info-circle"></i> Статус: <strong style="color: var(--crimson)">${b.status}</strong></p>${rev}</div><div class="booking-actions"><select onchange="updateStatus(${b.id}, this.value)"><option value="" disabled selected>Сменить статус</option><option value="Новая">Новая</option><option value="Банкет назначен">Банкет назначен</option><option value="Банкет завершен">Банкет завершен</option></select></div></div>`;
+        });
+    } catch(e) { console.error(e); }
+}
+
+async function updateStatus(id, newStatus) {
+    try { const res = await fetch(`/api/bookings/${id}/status`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: newStatus }) });
+        if(res.ok) { showToast('Статус обновлен!', 'success'); loadAdminBookings(); }
+    } catch(e) {}
+}
+loadAdminBookings();
+```
+
+d) Убедиться, что сервер отдаёт course_name и phone
+
+В вашем серверном файле (bookingController.js) запрос getAllBookings должен выглядеть так:
+
+```js
+exports.getAllBookings = async (req, res) => {
+    try {
+        const bookings = await pool.query(`
+            SELECT b.id, u.fio, u.phone, c.name as course_name, b.start_date, b.status, b.payment_method, b.review
+            FROM Bookings b 
+            JOIN Users u ON b.user_id = u.id 
+            JOIN Courses c ON b.cours_id = c.id
+        `);
+        res.status(200).json(bookings.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+```
+
+---
+
+3. Страница создания заявки (create.html) – если есть
+
+Найдите <select id="hall_id"> и замените на <select id="cours_id">.
+Если не менять, то document.getElementById('hall_id') вернёт null, и createBooking сломается.
+После исправления app.js (мы уже сменили на cours_id) страница должна работать.
+
+---
+
+Итог: что нужно сделать для полной работоспособности
+
+1. В серверном контроллере: запрос getAllBookings должен выбирать u.phone и давать алиас course_name.
+2. В admin.html: заменить hallFilter → courseFilter, hall_name → course_name, обновить скрипт как показано.
+3. В app.js: в createBooking отправлять cours_id.
+4. В create.html: у селекта сменить id="hall_id" на id="cours_id".
+
+После этих правок админ-панель начнёт корректно отображать и фильтровать заявки, а пользователи смогут создавать новые. Если останутся ошибки – пришлите третий файл, о котором говорили, помогу его поправить.
